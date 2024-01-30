@@ -84,13 +84,13 @@ logger = logging.getLogger(__name__) # create logger with name same as module na
 logger.parent # logger always has parent
 ```
 log format
-    %(asctime)s - время создания лога в виде, понятном человеку. По умолчанию выглядит так - 2023-12-31 11:29:31,689
-    %(filename)s - имя модуля, в котором сработал вызов лога
-    %(funcName)s - имя функции, в которой произошел вызов лога
-    %(levelname)s - уровень, на котором был вызван данный лог (DEBUG, INFO и т.п.)
-    %(lineno)d - номер строки кода, на которой произошел вызов лога
-    %(name)s - имя логгера
-    %(message)s - сообщение, которое должно быть выведено вместе с логом
+    %(asctime)s - время создания лога в виде, понятном человеку. По умолчанию выглядит так - 2023-12-31 11:29:31,689   
+    %(filename)s - имя модуля, в котором сработал вызов лога   
+    %(funcName)s - имя функции, в которой произошел вызов лога   
+    %(levelname)s - уровень, на котором был вызван данный лог (DEBUG, INFO и т.п.)   
+    %(lineno)d - номер строки кода, на которой произошел вызов лога   
+    %(name)s - имя логгера   
+    %(message)s - сообщение, которое должно быть выведено вместе с логом   
 
 example
 ```python
@@ -109,6 +109,49 @@ logging.basicConfig(
     style = '{'
 )
 
-``
+```
+## Handlers
+You can add handler for your logger to do something when event happens: send email, write to file...
+```python
+import logging
+import sys
+
+# Определяем первый вид форматирования
+format_1 = '#%(levelname)-8s [%(asctime)s] - %(filename)s:'\
+           '%(lineno)d - %(name)s - %(message)s'
+# Определяем второй вид форматирования
+format_2 = '[{asctime}] #{levelname:8} {filename}:'\
+           '{lineno} - {name} - {message}'
+
+# Инициализируем первый форматтер
+formatter_1 = logging.Formatter(fmt=format_1)
+# Инициализируем второй форматтер
+formatter_2 = logging.Formatter(
+    fmt=format_2,
+    style='{'
+)
+
+# Создаем логгер
+logger = logging.getLogger(__name__)
+
+# Инициализируем хэндлер, который будет перенаправлять логи в stderr
+stderr_handler = logging.StreamHandler()
+# Инициализируем хэндлер, который будет перенаправлять логи в stdout
+stdout_handler = logging.StreamHandler(sys.stdout)
+
+file_handler = logging.FileHandler('logs.log', mode = 'a', encodind = 'utf-8')
+
+# Устанавливаем форматтеры для хэндлеров
+stderr_handler.setFormatter(formatter_1)
+stdout_handler.setFormatter(formatter_2)
+file_handler.setFormatter(formatter_1)
+# Добавляем хэндлеры логгеру
+logger.addHandler(stdout_handler)
+logger.addHandler(stderr_handler)
+logger.addHandler(file_handler)
+
+# Создаем лог
+logger.warning('Это лог с предупреждением!')
+```
 
 
