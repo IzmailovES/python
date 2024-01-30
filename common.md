@@ -50,7 +50,7 @@ typing.Union # union, Union[int,float] ~ int | float
 typing.Literal # fixed values, for example user : dict[Literal['name'] | Literal['second_name'] | Literal['username'], str] means dict with fixed three keys and string value
 ...
 ```
-I can auto generate simple __init__() method with ```dataclasses.dataclass
+I can auto generate simple \_\_init\_\_() method with dataclasses.dataclass
 ```python
 fom dataclasses import dataclass
 @dataclass
@@ -62,4 +62,4 @@ class User:
 user = User(1,'Vasya') # at all
 ```
 where they live?
-in __anotations__ attribute in dict
+in \_\_annotations\_\_ attribute in dict
